@@ -1,0 +1,19 @@
+server:
+  port: 8087
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ead-authuser
+    username: eaduser
+    password: eadpass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Cria/atualiza tabelas automaticamente
+    show-sql: true       # Mostra as queries no console
+    open-in-view: false  # Boa prática para evitar LazyInitExceptions fora do escopo da transação
+    properties:
+      hibernate:
+        format_sql: true # Formata as queries no log para melhor leitura
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

@@ -7,12 +7,14 @@ spring:
     username: eaduser
     password: eadpass
     driver-class-name: org.postgresql.Driver
+  config:
+    encoding: UTF-8
 
   jpa:
     hibernate:
       ddl-auto: update  # Cria/atualiza tabelas automaticamente
     show-sql: true       # Mostra as queries no console
-    open-in-view: false  # Boa pr·tica para evitar LazyInitExceptions fora do escopo da transaÁ„o
+    open-in-view: false  # Boa pr√°tica para evitar LazyInitExceptions fora do escopo da transa√ß√£o
     properties:
       hibernate:
         format_sql: true # Formata as queries no log para melhor leitura

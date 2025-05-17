@@ -5,6 +5,7 @@ import com.ead.authuser.enums.UserStatus;
 import com.ead.authuser.enums.UserType;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,8 @@ public class AuthController {
     UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> signUp(@RequestBody UserDto userDto) {
+    public ResponseEntity<Object> signUp(@RequestBody @JsonView(UserDto.UserView.RegistrationPost.class)
+                                             UserDto userDto) {
 
         if (userService.getUserByUsername(userDto.getUsername())
                 .isPresent()) {

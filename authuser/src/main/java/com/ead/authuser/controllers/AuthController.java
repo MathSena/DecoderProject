@@ -21,33 +21,34 @@ import java.time.ZoneId;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<Object> signUp(@RequestBody @Validated(UserDto.UserView.RegistrationPost.class) @JsonView(UserDto.UserView.RegistrationPost.class)
-                                         UserDto userDto) {
+  @PostMapping("/signup")
+  public ResponseEntity<Object> signUp(
+      @RequestBody @Validated(UserDto.UserView.RegistrationPost.class) @JsonView(UserDto.UserView.RegistrationPost.class)
+      UserDto userDto) {
 
-        if (userService.getUserByUsername(userDto.getUsername())
-                .isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Conflict: Username is already in use!");
-        }
-        if (userService.getUserByEmail(userDto.getEmail())
-                .isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Conflict: Email is already in use!");
-        }
-
-        var userModel = new UserModel();
-        BeanUtils.copyProperties(userDto, userModel);
-        userModel.setUserStatus(UserStatus.ACTIVE);
-        userModel.setUserType(UserType.STUDENT);
-        userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
-        userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-        userService.save(userModel);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userModel);
+    if (userService.getUserByUsername(userDto.getUsername())
+        .isPresent()) {
+      return ResponseEntity.status(HttpStatus.CONFLICT)
+          .body("Conflict: Username is already in use!");
     }
+    if (userService.getUserByEmail(userDto.getEmail())
+        .isPresent()) {
+      return ResponseEntity.status(HttpStatus.CONFLICT)
+          .body("Conflict: Email is already in use!");
+    }
+
+    var userModel = new UserModel();
+    BeanUtils.copyProperties(userDto, userModel);
+    userModel.setUserStatus(UserStatus.ACTIVE);
+    userModel.setUserType(UserType.STUDENT);
+    userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+    userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+    userService.save(userModel);
+
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(userModel);
+  }
 }

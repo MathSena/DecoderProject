@@ -1,6 +1,7 @@
 package com.ead.authuser.services;
 
 import com.ead.authuser.models.UserModel;
+import com.ead.authuser.specifications.SpecificationTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,17 +11,17 @@ import java.util.UUID;
 
 public interface UserService {
 
-    List<UserModel> getAllUsers();
+  List<UserModel> getAllUsers();
 
-    Optional<UserModel> getUserById(UUID userId);
+  Optional<UserModel> getUserById(UUID userId);
 
-    void deleteUserById(UUID userId);
+  void deleteUserById(UUID userId);
 
-    void save(UserModel userModel);
+  void save(UserModel userModel);
 
-    Optional<Object> getUserByUsername(String username);
+  Optional<Object> getUserByUsername(String username);
 
-    Optional<Object> getUserByEmail(String email);
+  Optional<Object> getUserByEmail(String email);
 
-    Page<UserModel> getAllUsers(Pageable pageable);
+  Page<UserModel> getAllUsers(Pageable pageable, SpecificationTemplate.UserSpec spec);
 }

@@ -1,5 +1,8 @@
 package com.ead.authuser.controllers;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import com.ead.authuser.dtos.UserDto;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
@@ -36,6 +39,12 @@ public class UserController {
           direction = Sort.Direction.DESC) Pageable pageable) {
     Page<UserModel> userPage = userService.getAllUsers(pageable, spec);
     List<UserModel> users = userService.getAllUsers();
+    if (!userPage.isEmpty()) {
+      for (UserModel user : userPage.getContent()) {
+        user.add(
+            linkTo(methodOn(UserController.class).getUserById(user.getUserId())).withSelfRel());
+      }
+    }
     return ResponseEntity.status(HttpStatus.OK)
         .body(users);
 

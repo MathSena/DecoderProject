@@ -1,9 +1,9 @@
 server:
-  port: 8087
+  port: 8082
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/ead-authuser
+    url: jdbc:postgresql://localhost:5433/ead-course
     username: eaduser
     password: eadpass
     driver-class-name: org.postgresql.Driver

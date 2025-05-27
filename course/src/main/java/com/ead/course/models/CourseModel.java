@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -51,7 +54,8 @@ public class CourseModel implements Serializable {
   @Column(nullable = false)
   private UUID userInstructor;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @OneToMany(mappedBy = "course")
+  @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+  @Fetch(FetchMode.SUBSELECT)
   private Set<ModuleModel> modules;
 
 

@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LessonRepository extends JpaRepository<LessonModel, UUID> {
 
-  // Custom query methods can be defined here if needed
 
 }

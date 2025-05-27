@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,10 +38,11 @@ public class ModuleModel implements Serializable {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime creationDate;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = false, fetch= FetchType.LAZY)
   CourseModel course;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @OneToMany(mappedBy = "module")
+  @OneToMany(mappedBy = "module",fetch= FetchType.LAZY)
+  @Fetch(FetchMode.SUBSELECT)
   private Set<LessonModel> lessons;
 
 }

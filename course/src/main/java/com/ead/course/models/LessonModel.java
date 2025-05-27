@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,7 +21,6 @@ import lombok.Data;
 public class LessonModel implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID lessonId;
@@ -32,7 +32,8 @@ public class LessonModel implements Serializable {
   private String lessonVideoUrl;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime creationDate;
+  @ManyToOne(optional = false)
+  private ModuleModel module;
 
-  // Additional fields and methods can be added as needed
 
 }

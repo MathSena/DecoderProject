@@ -22,6 +22,8 @@ import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)

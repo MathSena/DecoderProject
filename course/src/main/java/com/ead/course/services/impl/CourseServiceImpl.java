@@ -9,6 +9,8 @@ import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.services.CourseService;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +41,20 @@ public class CourseServiceImpl implements CourseService {
       moduleRepository.deleteAll(moduleModels);
     }
     courseRepository.delete(courseModel);
+  }
+
+  @Override
+  public CourseModel saveCourse(CourseModel courseModel) {
+    return courseRepository.save(courseModel);
+  }
+
+  @Override
+  public Optional<CourseModel> findById(UUID courseID) {
+    return courseRepository.findById(courseID);
+  }
+
+  @Override
+  public List<CourseModel> findAll() {
+    return courseRepository.findAll();
   }
 }

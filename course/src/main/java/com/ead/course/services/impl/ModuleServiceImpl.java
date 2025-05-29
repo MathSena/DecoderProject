@@ -7,6 +7,8 @@ import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.services.ModuleService;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,20 @@ public class ModuleServiceImpl implements ModuleService {
     }
     moduleRepository.delete(moduleModel);
 
+  }
+
+  @Override
+  public ModuleModel saveModule(ModuleModel moduleModel) {
+    return moduleRepository.save(moduleModel);
+  }
+
+  @Override
+  public Optional<ModuleModel> findModuleIntoCourse(UUID courseId, UUID moduleId) {
+    return moduleRepository.findModuleIntoCourse(courseId, moduleId);
+  }
+
+  @Override
+  public List<ModuleModel> findAllByCourse(UUID courseId) {
+    return moduleRepository.findAllModulesIntoCourse(courseId);
   }
 }

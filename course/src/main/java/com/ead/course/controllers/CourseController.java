@@ -7,7 +7,6 @@ import com.ead.course.specifications.SpecificationTemplate;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.BeanUtils;

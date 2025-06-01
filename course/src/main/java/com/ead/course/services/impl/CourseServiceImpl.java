@@ -9,16 +9,18 @@ import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.services.CourseService;
 import com.ead.course.specifications.SpecificationTemplate.CourseSpec;
 import jakarta.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
+@Slf4j
 public class CourseServiceImpl implements CourseService {
 
   @Autowired
@@ -28,39 +30,56 @@ public class CourseServiceImpl implements CourseService {
   @Autowired
   LessonRepository lessonRepository;
 
-
   @Transactional
   @Override
   public void deleteCourse(CourseModel courseModel) {
+    log.info("Deleting course with ID: {}", courseModel.getCourseId());
     List<ModuleModel> moduleModels = moduleRepository.findAllModulesIntoCourse(
         courseModel.getCourseId());
     if (!moduleModels.isEmpty()) {
       for (ModuleModel moduleModel : moduleModels) {
+        log.info("Deleting lessons for module ID: {}", moduleModel.getModuleId());
         List<LessonModel> lessonModels = lessonRepository.findAllLessonsIntoModule(
             moduleModel.getModuleId());
         if (!lessonModels.isEmpty()) {
           lessonRepository.deleteAll(lessonModels);
+          log.info("Deleted {} lessons for module ID: {}", lessonModels.size(),
+              moduleModel.getModuleId());
         }
       }
       moduleRepository.deleteAll(moduleModels);
+      log.info("Deleted {} modules for course ID: {}", moduleModels.size(),
+          courseModel.getCourseId());
     }
     courseRepository.delete(courseModel);
+    log.info("Course with ID: {} successfully deleted.", courseModel.getCourseId());
   }
 
   @Override
   public CourseModel saveCourse(CourseModel courseModel) {
-    return courseRepository.save(courseModel);
+    log.info("Saving course with ID: {}", courseModel.getCourseId());
+    CourseModel savedCourse = courseRepository.save(courseModel);
+    log.info("Course with ID: {} successfully saved.", savedCourse.getCourseId());
+    return savedCourse;
   }
 
   @Override
   public Optional<CourseModel> findById(UUID courseID) {
-    return courseRepository.findById(courseID);
+    log.info("Fetching course with ID: {}", courseID);
+    Optional<CourseModel> course = courseRepository.findById(courseID);
+    if (course.isPresent()) {
+      log.info("Course with ID: {} found.", courseID);
+    } else {
+      log.warn("Course with ID: {} not found.", courseID);
+    }
+    return course;
   }
 
   @Override
-  public Page<CourseModel> findAll(Specification <CourseSpec> spec, Pageable pageable) {
-    return courseRepository.findAll(spec, pageable);
+  public Page<CourseModel> findAll(CourseSpec spec, Pageable pageable) {
+    log.info("Fetching all courses with specification and pagination.");
+    Page<CourseModel> courses = courseRepository.findAll(spec, pageable);
+    log.info("Successfully fetched {} courses.", courses.getTotalElements());
+    return courses;
   }
-
-
 }

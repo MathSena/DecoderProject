@@ -17,5 +17,4 @@ public interface UserRepository extends JpaRepository<UserModel, UUID>,
 
   Optional<Object> findByEmail(String email);
 
-  Page<UserModel> findAll(Pageable pageable, SpecificationTemplate.UserSpec spec);
 }

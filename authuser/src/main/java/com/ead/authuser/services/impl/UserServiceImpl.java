@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public Page<UserModel> getAllUsers(Pageable pageable, SpecificationTemplate.UserSpec spec) {
     log.info("Fetching users with pagination and specification.");
-    Page<UserModel> userPage = userRepository.findAll(pageable, spec);
+    Page<UserModel> userPage = userRepository.findAll(spec, pageable);
     log.info("Successfully fetched {} users with pagination.", userPage.getTotalElements());
     return userPage;
   }

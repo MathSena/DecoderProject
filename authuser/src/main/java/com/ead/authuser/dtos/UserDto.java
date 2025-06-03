@@ -57,7 +57,6 @@ public class UserDto {
   private String phoneNumber;
   @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
   private String cpf;
-  @NotBlank(groups = {UserView.RegistrationPost.class, UserView.ImagePut.class})
   @JsonView(UserView.ImagePut.class)
   private String imageUrl;
 

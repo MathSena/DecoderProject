@@ -58,6 +58,7 @@ public class CourseController {
     log.info("Saving a new course.");
     var courseModel = new CourseModel();
     BeanUtils.copyProperties(courseDto, courseModel);
+    courseModel.setUserInstructor(courseDto.getCourseInstructorId());
     courseModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
     courseModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
     courseService.saveCourse(courseModel);

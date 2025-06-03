@@ -76,6 +76,8 @@ public class ModuleController {
 
     var moduleModel = new ModuleModel();
     BeanUtils.copyProperties(moduleDto, moduleModel);
+    moduleModel.setModuleName(moduleDto.getTitle());
+    moduleModel.setModuleDescription(moduleDto.getDescription());
     moduleModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
     moduleModel.setCourse(courseModelOptional.get());
     moduleService.saveModule(moduleModel);

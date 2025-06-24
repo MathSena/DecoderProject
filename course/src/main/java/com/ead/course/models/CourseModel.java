@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -22,8 +23,6 @@ import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,7 +30,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "tb_courses")
 public class CourseModel implements Serializable {
 
-  private static final long serialVersionUID = 1l;
+  @Serial
+  private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID courseId;
@@ -59,6 +59,9 @@ public class CourseModel implements Serializable {
   @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
   @Fetch(FetchMode.SUBSELECT)
   private Set<ModuleModel> modules;
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+  private Set<CourseUserModel> courseUsers;
 
 
 }

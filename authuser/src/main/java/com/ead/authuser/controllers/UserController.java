@@ -7,6 +7,7 @@ import com.ead.authuser.dtos.UserDto;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
 import com.ead.authuser.specifications.SpecificationTemplate;
+import com.ead.authuser.specifications.SpecificationTemplate.UserSpec;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +38,19 @@ public class UserController {
   @GetMapping
   public ResponseEntity<List<UserModel>> getAllUsers(
       SpecificationTemplate.UserSpec spec,
-      @PageableDefault(size = 10, page = 0, sort = "userId", direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 10, page = 0, sort = "userId", direction = Sort.Direction.DESC) Pageable pageable,
+      @RequestParam(required = false) UUID courseId) {
     log.info("Fetching all users with pagination and specification.");
-    Page<UserModel> userPage = userService.getAllUsers(pageable, spec);
+    Page<UserModel> userPage = null;
+    if (courseId != null) {
+      log.info("Fetching users for course ID: {}", courseId);
+      userPage = userService.getAllUsers(
+          (Pageable) SpecificationTemplate.userCourseId(courseId).and(spec),
+          (UserSpec) pageable);
+    } else {
+      log.info("Fetching all users without course filter.");
+      userPage = userService.getAllUsers(pageable, spec);
+    }
     List<UserModel> users = userService.getAllUsers();
     if (!userPage.isEmpty()) {
       userPage.getContent().forEach(user ->

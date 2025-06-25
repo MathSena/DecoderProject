@@ -4,6 +4,7 @@ import com.ead.course.dtos.CourseDto;
 import com.ead.course.models.CourseModel;
 import com.ead.course.services.CourseService;
 import com.ead.course.specifications.SpecificationTemplate;
+import com.ead.course.specifications.SpecificationTemplate.CourseSpec;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -32,11 +33,20 @@ public class CourseController {
 
   @GetMapping
   public ResponseEntity<Page<CourseModel>> getAllCourses(SpecificationTemplate.CourseSpec spec,
-      @PageableDefault(size = 10, page = 0, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable) {
-    log.info("Fetching all courses with pagination and specification.");
-    Page<CourseModel> coursePage = courseService.findAll(spec, pageable);
-    log.info("Successfully fetched {} courses.", coursePage.getTotalElements());
-    return ResponseEntity.status(HttpStatus.OK).body(coursePage);
+      @PageableDefault(size = 10, page = 0, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
+      @RequestParam(required = false) UUID userId) {
+    if (userId != null) {
+      return ResponseEntity.status(HttpStatus.OK)
+          .body(courseService.findAll(
+              (CourseSpec) SpecificationTemplate.courseUserId(userId).and(spec), pageable));
+
+    } else {
+      log.info("Fetching all courses with pagination and specification.");
+      Page<CourseModel> coursePage = courseService.findAll(spec, pageable);
+      log.info("Successfully fetched {} courses.", coursePage.getTotalElements());
+      return ResponseEntity.status(HttpStatus.OK).body(coursePage);
+    }
+
   }
 
   @GetMapping("/{courseId}")

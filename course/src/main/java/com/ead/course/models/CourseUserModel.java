@@ -1,36 +1,31 @@
 package com.ead.course.models;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import java.io.Serial;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.UUID;
-import lombok.Data;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "TB_COURSES_USERS")
+@Table(name = "tb_courses_users")
 public class CourseUserModel implements Serializable {
 
-  @Serial
-  private static final long serialVersionUID = 1L;
-
   @Id
-  @GeneratedValue(strategy = jakarta.persistence.GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  private CourseModel course;
-
-  @Column(nullable = false)
+  @Column(nullable = false, name = "user_id")
   private UUID userId;
 
+  // Relacionamento: muitos CourseUserModel para um CourseModel
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "course_id", nullable = false)
+  private CourseModel course;
 }

@@ -55,9 +55,14 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
   @Column(nullable = false)
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime lastUpdateDate;
+
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private Set<UserCourseModel> userCourses;
+  @javax.persistence.OneToMany(mappedBy = "user", fetch = javax.persistence.FetchType.LAZY)
+  private Set<UserCourseModel> usersCourses;
+
+  public UserCourseModel convertToUserCourseModel(UUID courseId) {
+    return new UserCourseModel(null, courseId, this);
+  }
 
 
 }

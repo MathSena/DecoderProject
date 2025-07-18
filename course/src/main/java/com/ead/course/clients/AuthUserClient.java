@@ -5,6 +5,7 @@ import com.ead.course.dtos.ResponsePageDto;
 import com.ead.course.dtos.UserDto;
 import com.ead.course.services.UtilsService;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +44,13 @@ public class AuthUserClient {
       ParameterizedTypeReference<ResponsePageDto<UserDto>> responseType = new ParameterizedTypeReference<ResponsePageDto<UserDto>>() {
       };
       result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
-      searchResult = result.getBody().getContent();
+      searchResult = Objects.requireNonNull(result.getBody()).getContent();
       log.debug("Response Number of Elements: {} ", searchResult.size());
     } catch (HttpStatusCodeException e) {
       log.error("Error request /courses {} ", e);
     }
     log.info("Ending request /users courseId {} ", courseId);
+    assert result != null;
     return result.getBody();
   }
 
@@ -63,6 +65,11 @@ public class AuthUserClient {
     courseUserDto.setUserId(userId);
     courseUserDto.setCourseId(courseId);
     restTemplate.postForObject(url, courseUserDto, String.class);
+  }
+
+  public void deleteCourseInAuthUser(UUID courseId){
+    String url = REQUEST_URL_AUTHUSER + "/users/courses/" + courseId;
+    restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
   }
 
 }

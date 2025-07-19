@@ -92,4 +92,14 @@ public class UserServiceImpl implements UserService {
     log.info("Successfully fetched {} users with pagination.", userPage.getTotalElements());
     return userPage;
   }
+
+  @Override
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
+  @Override
+  public boolean existsByUsername(String username) {
+    return userRepository.existsByUsername(username);
+  }
 }

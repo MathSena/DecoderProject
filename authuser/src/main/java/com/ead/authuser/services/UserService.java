@@ -24,4 +24,9 @@ public interface UserService {
   Optional<Object> getUserByEmail(String email);
 
   Page<UserModel> getAllUsers(Pageable pageable, SpecificationTemplate.UserSpec spec);
+
+  boolean existsByUsername(String username);
+
+  boolean existsByEmail(String email);
+
 }

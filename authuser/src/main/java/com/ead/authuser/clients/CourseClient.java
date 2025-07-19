@@ -37,7 +37,7 @@ public class CourseClient {
     log.debug("Request URL: {} ", url);
     log.info("Request URL: {} ", url);
     try {
-      ParameterizedTypeReference<ResponsePageDto<CourseDto>> responseType = new ParameterizedTypeReference<ResponsePageDto<CourseDto>>() {
+      ParameterizedTypeReference<ResponsePageDto<CourseDto>> responseType = new ParameterizedTypeReference<>() {
       };
       result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
       searchResult = result.getBody().getContent();
@@ -46,6 +46,12 @@ public class CourseClient {
       log.error("Error request /courses {} ", e);
     }
     log.info("Ending request /courses userId {} ", userId);
+    assert result != null;
     return result.getBody();
+  }
+
+  public void deleteUserInCourse(UUID userId){
+    String url = REQUEST_URL_COURSE + "/courses/users/" + userId;
+    restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
   }
 }

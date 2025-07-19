@@ -1,9 +1,6 @@
 package com.ead.authuser.repositories;
 
 import com.ead.authuser.models.UserModel;
-import com.ead.authuser.specifications.SpecificationTemplate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -17,4 +14,6 @@ public interface UserRepository extends JpaRepository<UserModel, UUID>,
 
   Optional<Object> findByEmail(String email);
 
+  boolean existsByUsername(String username);
+  boolean existsByEmail(String email);
 }
